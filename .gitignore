@@ -1,2 +1,3 @@
 *.yaml
 *.swp
+__pyccache__
