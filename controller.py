@@ -16,6 +16,7 @@ def read_config():
 
 def check_param(_ns,_env):
     
+     # read config file and iterate
     iter = read_config().__iter__()
     if not _ns:
         _ns = iter.__next__()
