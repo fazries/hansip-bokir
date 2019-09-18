@@ -18,13 +18,13 @@ def read_config():
 
 def check_param(_ns,_env):
     
-    cfg_ini = read_config()
+    iter = read_config().__iter__()
     if not _ns:
-        _ns = cfg_ini[0]
+        _ns = iter.__next__()
     else:
         _ns = _ns    
     if not _env:
-        _env = cfg_ini[1]
+        _env = iter.__next__()
     else:
         _env = _env
     
@@ -33,9 +33,13 @@ def check_param(_ns,_env):
 def set_context():
 
     # read config file
-    cfg_ini = read_config()
+    # and iterate
+    iter = read_config().__iter__()
     # get values of environment
-    _env = cfg_ini[1]
+    _ns  = iter.__next__()
+    _env = iter.__next__()
+
+    print(_env)
     # get context based on environment
     cmd =  "kubectl config get-contexts | grep "+_env+" | awk \'{ print $2 }\'"
     process = subprocess.run(cmd,stdout=subprocess.PIPE, shell=True)
@@ -44,7 +48,7 @@ def set_context():
     output = str(process.stdout, encoding='utf-8')
 
     # set context
-    cmd = "kubectl config set-context {}".format(output)
+    cmd = "kubectl config use-context {}".format(output)
     process = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True)
     output = str(process.stdout, encoding='utf-8')
     print(output)
@@ -131,8 +135,11 @@ def upload_cm(args):
     
     # remove all '.' from user input
     _cm = re.sub("\..+$","",args._cm)
+    # get the path
     _filepath = os.path.realpath("{}.yaml").format(_cm)
+
     cmd = "kubectl apply -f "+_filepath
+    
     process = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True)
     output = str(process.stdout, encoding='utf-8')
     print(output)    
@@ -182,7 +189,7 @@ def menus():
 
         # if user didn't pass any arguments
         # print help
-        parser.print_help()
+        #parser.print_help()
         
         # kill pid
         sys.exit(0)
