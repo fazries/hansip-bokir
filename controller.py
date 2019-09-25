@@ -8,14 +8,14 @@ def read_config():
     
     config = configparser.ConfigParser()
     config.sections()
-    config.read('config.ini')
+    config.read('conf/config.ini')
     _ns = config['bokir']['namespace']
     _env = config['bokir']['env']
 
     return [_ns,_env];
 
 def check_param(_ns,_env):
-    
+
      # read config file and iterate
     iter = read_config().__iter__()
     if not _ns:
@@ -54,7 +54,7 @@ def set_context():
 def update_config(args):
 
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read('conf/config.ini')
     a = config['bokir']
     
     print("current config")
@@ -140,4 +140,4 @@ def upload_cm(args):
     
     process = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True)
     output = str(process.stdout, encoding='utf-8')
-    print(output) 
+    print(output)

@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import bokir as hansip
 
 def main():
